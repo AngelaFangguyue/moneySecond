@@ -17,14 +17,20 @@ Vue.component(Button.name, Button);
 Vue.use(Cell);
 // Vue.use(mt-button);
 
-import { Field } from 'mint-ui';
+import { Field } from "mint-ui";
 Vue.component(Field.name, Field);
 
-import { Badge } from 'mint-ui';
+import { Badge } from "mint-ui";
 Vue.component(Badge.name, Badge);
 
+//CSS Components 中的Header
+import { Header } from "mint-ui";
+Vue.component(Header.name, Header);
 
 
+//import { MessageBox } from "mint-ui/packages/message-box/src/message-box";
+//Vue.component(MessageBox);
+//console.log(MessageBox);
 
 Vue.component("Nav", Nav); //将导航栏注册为全局组件
 Vue.component("Layout", Layout); //将布局注册为全局组件

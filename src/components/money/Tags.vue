@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <ul>
-      <li @click="toggleSelectTags(item)" v-for="item in dataSource" :key="item">{{ item }}</li>
+      <li @click="toggleSelectTags(item)" v-for="item in dataSource" :key="item.id">{{ item.name }}</li>
     </ul>
     <mt-button
       class="addTagButton"
@@ -17,7 +17,8 @@
   import Vue from 'vue';
   import {Component, Prop, Watch} from 'vue-property-decorator';
   import tagModel from '@/model/tagModel';
-  import {MessageBox} from 'mint-ui/packages/message-box/src/message-box';
+  import { MessageBox } from "mint-ui";
+import createdId from '../../library/createId';
 
   //  TODO,如何给其定义类型
   //MessageBox.prompt("请输入新增标签名").then(() => {});
@@ -29,7 +30,7 @@
     selectedTags: string[] = [];
     //TODO
     //tags = tagModel.tags;
-    addTags() {
+    addTags() {//应该将其抽取成一个组件
       //TODO
       MessageBox.prompt("请输入新增标签名").then(({ value, action }) => {
         //console.log(value);
@@ -42,8 +43,9 @@
           console.log("标签名输入不能为空")
         }else{
           if(this.dataSource){
+            const newTag = {id:createdId(),name:value};
             //this.dataSource.push(value);
-            this.$emit("update:dataSource",[...this.dataSource,value])
+            this.$emit("update:dataSource",[...this.dataSource,newTag]);//这个是更新父组件中的tag
           }
         }
 

@@ -1,4 +1,3 @@
-import recordType from '@/custom';
 const recordName = "record";
 const recordListsModel = {
 

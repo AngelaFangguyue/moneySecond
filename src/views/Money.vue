@@ -18,12 +18,26 @@ import Numberpads from "@/components/money/Numberpads.vue";
 import Tags from "@/components/money/Tags.vue";
 import Notes from "@/components/money/Notes.vue";
 import Types from "@/components/money/Types.vue";
-import recordType from "@/custom.d.ts";
 import recordListsModel from "@/model/recordListsModel";
+import tagModel from "@/model/tagModel"
+import createId from "@/library/createId";
 
 @Component({ components: { Types, Notes, Tags, Numberpads } })
 export default class Money extends Vue {
-  tags = ["衣", "食", "住", "行"];
+  //tags = tagModel.fetchTags();//先用tagModel.tags尝试一下
+  tags = tagModel.tags;
+
+  @Watch("tags")
+  onTagsChanged(val: recordType[]){
+    tagModel.tags = val;
+    tagModel.saveTags();
+    //const newtag = {id: createId(),name:val};
+    //tagModel.createTags(newtag);
+  }
+  // created(){
+  //   this.tags = tagModel.fetchTags(); 
+  // }
+
   recordList: recordType = {
     tag1: [],
     note1: "",
@@ -32,9 +46,7 @@ export default class Money extends Vue {
   };
   recordLists: recordType[] = recordListsModel.getRecords();
 
-
-
-//使用.sync修饰符的例子
+  //使用.sync修饰符的例子
   onUpdated(e: string[]) {
     this.recordList.tag1 = e;
     console.log(e);
@@ -55,7 +67,9 @@ export default class Money extends Vue {
   //先将记录push进数组
   saveRecordsIm() {
     //解决每条数据都一样的问题
-    const newRecordList: recordType = JSON.parse(JSON.stringify(this.recordList))
+    const newRecordList: recordType = JSON.parse(
+      JSON.stringify(this.recordList)
+    );
     this.recordLists.push(newRecordList);
     //this.recordLists.push(this.recordList);//对象数组，所以要改成上面两句话，才不会使得每条数据都一样
     //window.localStorage.setItem("tags",JSON.stringify(this.recordLists));
