@@ -19,6 +19,9 @@
   import tagModel from '@/model/tagModel';
   import {MessageBox} from 'mint-ui/packages/message-box/src/message-box';
 
+  //  TODO,如何给其定义类型
+  //MessageBox.prompt("请输入新增标签名").then(() => {});
+
   @Component
   export default class Tags extends Vue {
 
