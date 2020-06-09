@@ -54,7 +54,10 @@ export default class Money extends Vue {
 
   //先将记录push进数组
   saveRecordsIm() {
-    this.recordLists.push(this.recordList);
+    //解决每条数据都一样的问题
+    const newRecordList: recordType = JSON.parse(JSON.stringify(this.recordList))
+    this.recordLists.push(newRecordList);
+    //this.recordLists.push(this.recordList);//对象数组，所以要改成上面两句话，才不会使得每条数据都一样
     //window.localStorage.setItem("tags",JSON.stringify(this.recordLists));
     //this.recordList.number1 = '0';//这句话不应该写在这里，而是要写在number组件中
   }
