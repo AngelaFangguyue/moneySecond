@@ -1,6 +1,6 @@
 <template>
-  <div id="layout-global">
-    <div id="main-wrapper">
+  <div id="layout-global" :class="`${classPerfix}-layout-global`">
+    <div id="main-wrapper" :class="`${classPerfix}-main-wrapper`">
       <slot></slot>
     </div>
     <Nav id="nav-global"></Nav>
@@ -9,10 +9,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
-export default class Layout extends Vue {}
+export default class Layout extends Vue {
+  @Prop(String) readonly classPerfix!: string;
+}
 </script>
 
 <style lang="scss" scoped>

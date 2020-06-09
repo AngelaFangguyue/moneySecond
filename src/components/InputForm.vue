@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{notesInputForm}}
     <mt-field
      :attr="{ maxlength: 100 }"
       placeholder="请输入备注"
