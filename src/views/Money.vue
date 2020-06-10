@@ -26,6 +26,9 @@ import createId from "@/library/createId";
 export default class Money extends Vue {
   //tags = tagModel.fetchTags();//先用tagModel.tags尝试一下
   tags = tagModel.tags;
+  created(){
+    this.tags = tagModel.fetchTags();
+  }
 
   @Watch("tags")
   onTagsChanged(val: recordType[]){
@@ -34,9 +37,7 @@ export default class Money extends Vue {
     //const newtag = {id: createId(),name:val};
     //tagModel.createTags(newtag);
   }
-  // created(){
-  //   this.tags = tagModel.fetchTags(); 
-  // }
+
 
   recordList: recordType = {
     tag1: [],
@@ -78,7 +79,7 @@ export default class Money extends Vue {
 
   //watch的时候去调用model中的存储方法
   @Watch("recordLists")
-  onTagsListChanged(val: recordType[]) {
+  onRecordListsChanged(val: recordType[]) {
     //window.localStorage.setItem("tags", JSON.stringify(this.recordLists));
     recordListsModel.saveRecords(val);
   }

@@ -8,7 +8,8 @@ const tagModel = {
 
   fetchTags() {
     this.tags = JSON.parse(window.localStorage.getItem("tags") || "[]");
-    if (this.tags === []) {
+    console.log("1",this.tags);
+    if (this.tags.length === 0) {
       this.tags = [
         { id: 1, name: "衣" },
         { id: 2, name: "食" },
@@ -16,6 +17,7 @@ const tagModel = {
         { id: 4, name: "行" },
       ];
     }
+    console.log("2",this.tags);
     return this.tags;
   },
 

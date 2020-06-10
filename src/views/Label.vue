@@ -34,6 +34,8 @@ export default class Label extends Vue {
 
   created() {
     this.tags = tagModel.fetchTags();//现在是可以正常添加的
+    //tagModel.fetchTags();//如果将上面这句话换成这句话，那么就无法新增了。
+    console.log(this.tags);
   }
 
   addTag() {
