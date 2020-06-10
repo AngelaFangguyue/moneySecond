@@ -20,7 +20,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-
+import eventBus from '@/eventBus';
 @Component
 export default class Numberpads extends Vue {
   @Prop(String) value!: string;
@@ -52,6 +52,7 @@ export default class Numberpads extends Vue {
 
         this.$emit("update:value", this.output);
         this.$emit("submit", this.output);
+        eventBus.$emit("clearSelectedTag");
         this.output = "0"; //注意这句话要写在Money.vue组件中，若写成下面这句话，由于.sync,使得value会及时改变
         //this.output = this.value;//其实这个时候，value早就不是最开始的0了
       } else if (input === "删除") {

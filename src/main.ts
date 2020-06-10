@@ -27,7 +27,6 @@ Vue.component(Badge.name, Badge);
 import { Header } from "mint-ui";
 Vue.component(Header.name, Header);
 
-
 //import { MessageBox } from "mint-ui/packages/message-box/src/message-box";
 //Vue.component(MessageBox);
 //console.log(MessageBox);
@@ -42,3 +41,4 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+

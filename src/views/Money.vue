@@ -1,43 +1,43 @@
 <template>
   <Layout class="moneyWrapper" classPerfix="money">
-    <Tags class="num4" :dataSource.sync="tags" @updated:selectTags="onUpdated"></Tags>
+    <!-- <Tags class="num4" :dataSource.sync="tags" @updated:selectTags="onUpdated"></Tags> -->
+    <Tags class="num4" @updated:selectTags="onUpdated"></Tags>
     <Notes class="num3" @update:value="onNotes"></Notes>
     <!--    <Types class="num2" :value="recordList.type1" @update:value="onTypes"></Types>-->
     <Types class="num2" :value.sync="recordList.type1"></Types>
     <!--    <Numberpads class="num1" :value="recordList.number1" @update:value="onNumberpads"></Numberpads>-->
-    <Numberpads class="num1" :value.sync="recordList.number1" @submit="saveRecordsIm"></Numberpads>
-    {{recordLists}}
+    <Numberpads class="num1" :value.sync="recordList.number1" @submit="addRecords"></Numberpads>
+    {{$store.state.records}}
   </Layout>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 
 import Numberpads from "@/components/money/Numberpads.vue";
 import Tags from "@/components/money/Tags.vue";
 import Notes from "@/components/money/Notes.vue";
 import Types from "@/components/money/Types.vue";
 import recordListsModel from "@/model/recordListsModel";
-import tagModel from "@/model/tagModel"
-import createId from "@/library/createId";
+//import tagModel from "@/model/tagModel";
+//import createId from "@/library/createId";
 
 @Component({ components: { Types, Notes, Tags, Numberpads } })
 export default class Money extends Vue {
-  //tags = tagModel.fetchTags();//先用tagModel.tags尝试一下
-  tags = tagModel.tags;
-  created(){
-    this.tags = tagModel.fetchTags();
-  }
+  // //tags = tagModel.fetchTags();//先用tagModel.tags尝试一下
+  // tags = tagModel.tags;
+  // created() {
+  //   this.tags = tagModel.fetchTags();
+  // }
 
-  @Watch("tags")
-  onTagsChanged(val: recordType[]){
-    tagModel.tags = val;
-    tagModel.saveTags();
-    //const newtag = {id: createId(),name:val};
-    //tagModel.createTags(newtag);
-  }
-
+  // @Watch("tags")
+  // onTagsChanged(val: tagType[]) {
+  //   tagModel.tags = val;
+  //   tagModel.saveTags();
+  //   //const newtag = {id: createId(),name:val};
+  //   //tagModel.createTags(newtag);
+  // }
 
   recordList: recordType = {
     tag1: [],
@@ -49,8 +49,9 @@ export default class Money extends Vue {
 
   //使用.sync修饰符的例子
   onUpdated(e: string[]) {
-    this.recordList.tag1 = e;
+    this.recordList.tag1 = JSON.parse(JSON.stringify(e));
     console.log(e);
+    
   }
   onNotes(e: string) {
     this.recordList.note1 = e;
@@ -65,24 +66,32 @@ export default class Money extends Vue {
   //   console.log(e);
   // }//使用.sync修饰符
 
-  //先将记录push进数组
-  saveRecordsIm() {
-    //解决每条数据都一样的问题
-    const newRecordList: recordType = JSON.parse(
-      JSON.stringify(this.recordList)
-    );
-    this.recordLists.push(newRecordList);
-    //this.recordLists.push(this.recordList);//对象数组，所以要改成上面两句话，才不会使得每条数据都一样
-    //window.localStorage.setItem("tags",JSON.stringify(this.recordLists));
-    //this.recordList.number1 = '0';//这句话不应该写在这里，而是要写在number组件中
+  addRecords(){
+    this.$store.commit("createRecords",this.recordList);
+    this.recordList = {};
   }
 
-  //watch的时候去调用model中的存储方法
-  @Watch("recordLists")
-  onRecordListsChanged(val: recordType[]) {
-    //window.localStorage.setItem("tags", JSON.stringify(this.recordLists));
-    recordListsModel.saveRecords(val);
-  }
+
+
+
+  // //先将记录push进数组
+  // saveRecordsIm() {
+  //   //解决每条数据都一样的问题
+  //   const newRecordList: recordType = JSON.parse(
+  //     JSON.stringify(this.recordList)
+  //   );
+  //   this.recordLists.push(newRecordList);
+  //   //this.recordLists.push(this.recordList);//对象数组，所以要改成上面两句话，才不会使得每条数据都一样
+  //   //window.localStorage.setItem("tags",JSON.stringify(this.recordLists));
+  //   //this.recordList.number1 = '0';//这句话不应该写在这里，而是要写在number组件中
+  // }
+
+  // //watch的时候去调用model中的存储方法
+  // @Watch("recordLists")
+  // onRecordListsChanged(val: recordType[]) {
+  //   //window.localStorage.setItem("tags", JSON.stringify(this.recordLists));
+  //   recordListsModel.saveRecords(val);
+  // }
 
   // getRecords() {
   //   return (this.recordLists = JSON.parse(

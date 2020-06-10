@@ -6,8 +6,18 @@
       </router-link>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
-    <div>
+    <!-- <div>
       <input type="text" v-model="tagName" />
+    </div>-->
+    <br />
+    <div>
+      <!-- <input type="text" v-model="$store.state.tags[$store.state.index].name" @input="test" /> -->
+      <!--这一步有问题，因为没有存储在localstorage中-->
+      <input
+        type="text"
+        :value="$store.state.tags[$store.state.index].name"
+        @input="$store.commit('updateTags',$event.target.value)"
+      />
     </div>
     <div>
       <!--这个待会儿将其封装成一个组件-->
@@ -26,21 +36,30 @@ export default class EditLabel extends Vue {
   tagId = "";
   tagIndex = -1;
   tagName = "";
+  //   test() {
+  //     console.log("test");
+  //     console.log(this.$store.state.tags[this.$store.state.index].name);
+  //     console.log(this.$store.state.tags);//虽然变化了，但是没有存储在localStorage中
+  //   }
   //tag = { id: 0, name: "" };
   // tag = {};
   //这两种写法也可以，只不过需要在watch的时候，watch的是tag.name,如果只watch tag的话，会报错。
-  //[Vue warn]: Error in callback for watcher "tag": 
+  //[Vue warn]: Error in callback for watcher "tag":
   //"TypeError: Converting circular structure to JSON-->
   //starting at object with constructor 'Object'--- property 'name' closes the circle"
-  created() {
-    //找到id对应的tag对象
-    //console.log("this.tagId111");
-    this.tagId = this.$route.params.id;
-    this.tagIndex = tagModel.findTagId(this.tagId);
-    this.tagName = tagModel.tags[this.tagIndex].name;
-    //this.tag = tagModel.tags[this.tagIndex];
-    //console.log(this.$route.params, this.tagId, this.tagIndex, this.tagName);//{id:"2"} "2"  -1  undefined
-  }
+
+  /////////////////////////////////////////////
+  //  created() {
+  //     //找到id对应的tag对象
+  //     //console.log("this.tagId111");
+  //     this.tagId = this.$route.params.id;
+  //     this.tagIndex = tagModel.findTagId(this.tagId);
+  //     this.tagName = tagModel.tags[this.tagIndex].name;
+  //     //this.tag = tagModel.tags[this.tagIndex];
+  //     //console.log(this.$route.params, this.tagId, this.tagIndex, this.tagName);//{id:"2"} "2"  -1  undefined
+  //   }
+  //////////////////////////////////////////
+
   //当tag变化的时候，去保存，也就是修改tag的时候
   @Watch("tagName")
   onTagChanged(val: string) {
@@ -59,9 +78,16 @@ export default class EditLabel extends Vue {
 
   deleteTag() {
     //console.log("删除"); //这个方法也要写到model中
-    tagModel.deleteTags(this.tagIndex);
+    //tagModel.deleteTags(this.tagIndex);
     //tagModel.saveTags();
+    this.$store.commit("deleteTags",this.$store.state.index);
     this.$router.push("/label");
+  }
+
+  //////////////////////////
+  created() {
+    this.$store.commit("fetchTags");
+    this.$store.commit("findTagId", this.$route.params.id);
   }
 }
 </script>
