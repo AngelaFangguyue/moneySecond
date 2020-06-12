@@ -52,6 +52,7 @@ const store = new Vuex.Store({
 
     ///////////////////////////////////////////
     createRecords(state, newRecord){
+      //判断
       state.records.push(newRecord);
       window.localStorage.setItem("record", JSON.stringify(state.records));
     },

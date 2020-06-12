@@ -43,7 +43,8 @@ export default class Money extends Vue {
     tag1: [],
     note1: "",
     type1: "-",
-    number1: "0"
+    number1: "0",
+    createtime: new Date(),
   };
   recordLists: recordType[] = recordListsModel.getRecords();
 
@@ -67,8 +68,9 @@ export default class Money extends Vue {
   // }//使用.sync修饰符
 
   addRecords(){
-    this.$store.commit("createRecords",this.recordList);
-    this.recordList = {};
+    this.recordList.createtime = new Date();
+    this.$store.commit("createRecords",JSON.parse(JSON.stringify(this.recordList)));
+    //this.recordList = {};
   }
 
 
